@@ -133,13 +133,13 @@ def create_active_uplink(module, pg):
     try:
         reconfig_task = pg.ReconfigureDVPortgroup_Task(pg_spec)
         changed, result = wait_for_task(reconfig_task)
-    except vim.fault.DvsFault, dvs_fault:
+    except vim.fault.DvsFault as dvs_fault:
         module.fail_json(msg="Invalid spec: {}".format(str(dvs_fault)))
-    except vim.fault.ConcurrentAccess, access:
+    except vim.fault.ConcurrentAccess as access:
         module.fail_json(msg="Concurrent Access Fault: {}".format(str(access)))
-    except vmodl.fault.NotSupported, support:
+    except vmodl.fault.NotSupported as support:
         module.fail_json(msg="Feature in spec not supported: {}".format(str(support)))
-    except Exception, e:
+    except Exception as e:
         module.fail_json(msg="Failed to reconfigure: {}".format(str(e)))
 
     return changed, result
